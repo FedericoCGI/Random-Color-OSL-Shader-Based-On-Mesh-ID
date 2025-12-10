@@ -1,1 +1,33 @@
+shader SugarDecorationShader(
+        string attributeName = "meshID" [[string label = "User Data Attribute Name"]],
+    float seed = 0.0 [[string label = "Global Seed"]],
+    color colorA = color(1.0, 0.0, 0.0),
+    color colorB = color(0.0, 1.0, 0.0),
+    color colorC = color(1.0, 0.0, 1.0),
+    color colorD = color(1.0, 1.0, 1.0),
+    color colorE = color(0.0, 1.1, 1.1),
+    color colorF = color(0.0, 1.1, 1.1),
+    color colorG = color(0.0, 1.1, 1.1),
+    color colorH = color(0.0, 1.1, 1.1),
+    color colorI = color(0.0, 1.1, 1.1),
+    output color outputColor = color(0.0, 0.0, 0.0)
+)
+{
+    int id_value = 0;
+    
+    // Try to get the float value from the user defined attribute
+    getattribute(attributeName, id_value);
 
+    // Use the attribute value + global seed for the random cell noise
+    //float noise_val = noise("cell", id_value + seed);
+
+    // Assign the random float value to a color (grayscale here, but can be expanded)
+    //randomColor = color(noise_val, noise_val, noise_val);
+
+    float r = cellnoise(id_value * 37.54 + seed * 13); // r in [0,1)
+    int random_index = (int)(r * 9.0); // r in [0,5) + 1 -> r in [1,6) that means r in [1,5]
+
+    color color_list[9] = {colorA, colorB, colorC, colorD, colorE, colorF, colorG, colorH, colorI};
+
+    outputColor = color_list[random_index];
+}
